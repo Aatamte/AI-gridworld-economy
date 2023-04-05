@@ -21,9 +21,19 @@ class BaseAgent:
         self.color = None
         self.id = None
         self.inventory = {}
+        self.inventory_history = []
+        self.timestep = 0
 
     def reset(self, grid):
         pass
+
+    def add_inventory(self, new_inventory):
+        n_inv = new_inventory.copy()
+        n_inv["idx"] = self.timestep
+        self.inventory_history.append(
+            n_inv
+        )
+        self.timestep += 1
 
     def move_north(self):
         self.y -= 1

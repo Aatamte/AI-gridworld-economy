@@ -1,7 +1,5 @@
-import pygame
-import opensimplex
+
 import numpy as np
-import matplotlib.pyplot as plt
 import noise
 import plotly.graph_objs as go
 from src.env.Resources import Resource
@@ -56,11 +54,11 @@ class Map:
         self.resource_parameters = resource_parameters
         self.num_resources = len(self.resource_parameters)
         self.seed = seed
-        self.grid = np.zeros((n, n))
-        self.agent_locations = np.zeros((n, n))
+        self.grid = np.zeros((n, n), dtype=np.int)
+        self.agent_locations = np.zeros((n, n), dtype=np.int)
 
-        self.resource_ids = np.zeros((n, n))
-        self.resource_amounts = np.zeros((n, n))
+        self.resource_ids = np.zeros((n, n), dtype=np.int)
+        self.resource_amounts = np.zeros((n, n), dtype=np.int)
         self.resource_lookup = {r.id + 1: r for r in resource_parameters.values()}
         self.resource_lookup[0] = Resource(
             name="empty",
@@ -118,7 +116,7 @@ class Map:
             if current_amount == 0:
                 self.resource_ids[agent.x, agent.y] = 0
 
-            gather_amount = min(10, current_amount)
+            gather_amount = int(min(10, current_amount))
             self.resource_amounts[agent.x][agent.y] -= gather_amount
             if on_resource.name in agent.inventory.keys():
                 agent.inventory[on_resource.name] += gather_amount

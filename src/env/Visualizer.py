@@ -1,6 +1,6 @@
-import pygame
-import numpy as np
-from pygame.color import Color
+import contextlib
+with contextlib.redirect_stdout(None):
+    import pygame
 
 
 class Colors:
@@ -41,7 +41,7 @@ class GridWorldVisualizer:
             intensity = 1 - (amount / self.resource_lookup[id].a_max)
 
             for i in range(3):
-                c[i] = c[i] + (Colors.EMPTY[i] - c[i]) * (0.25 * intensity)
+                c[i] += (Colors.EMPTY[i] - c[i]) * (0.25 * intensity)
 
             pygame.draw.rect(self.screen, tuple(c), rect)
 

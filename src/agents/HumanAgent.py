@@ -1,42 +1,11 @@
 from src.agents.BaseAgent import BaseAgent
-import pygame
-import msvcrt
+from msvcrt import getche
 import sys
-
-if sys.platform == 'win32':
-    import msvcrt
-    getch = msvcrt.getch
-    getche = msvcrt.getche
-else:
-    import sys
-    import termios
-    def __gen_ch_getter(echo):
-        def __fun():
-            fd = sys.stdin.fileno()
-            oldattr = termios.tcgetattr(fd)
-            newattr = oldattr[:]
-            try:
-                if echo:
-                    # disable ctrl character printing, otherwise, backspace will be printed as "^?"
-                    lflag = ~(termios.ICANON | termios.ECHOCTL)
-                else:
-                    lflag = ~(termios.ICANON | termios.ECHO)
-                newattr[3] &= lflag
-                termios.tcsetattr(fd, termios.TCSADRAIN, newattr)
-                ch = sys.stdin.read(1)
-                if echo and ord(ch) == 127: # backspace
-                    # emulate backspace erasing
-                    # https://stackoverflow.com/a/47962872/404271
-                    sys.stdout.write('\b \b')
-            finally:
-                termios.tcsetattr(fd, termios.TCSADRAIN, oldattr)
-            return ch
-        return __fun
-    getch = __gen_ch_getter(False)
-    getche = __gen_ch_getter(True)
+import numpy as np
+import random
 
 
-class HumanAgents(BaseAgent):
+class HumanAgent(BaseAgent):
     def __init__(self):
         super().__init__()
         self.name = "human"
@@ -44,7 +13,9 @@ class HumanAgents(BaseAgent):
         self.y = None
 
     def select_action(self):
+        print(f"agent ({self.color}) {self.name}'s move: ")
         key = getche().decode()
-        print(type(key))
-        print(self.x, self.y)
         return int(key)
+
+    def random_action(self):
+        return random.choice([8, 4, 2 ,6 ,5])
