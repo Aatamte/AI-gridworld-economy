@@ -1,3 +1,4 @@
+import random
 
 import numpy as np
 import noise
@@ -12,9 +13,9 @@ def resource_generator(map_size, num_resources, space = 0.5):
     :return:
     """
     world = np.zeros((map_size, map_size))
-    scale = 100
-    octaves = 3
-    persistence = 0.5
+    scale = random.choice([i for i in range(80, 120)])
+    octaves = random.choice([1, 2, 3, 4])
+    persistence = random.choice([0.4, 0.5, 0.6, 0.7, 0.8])
     lacunarity = 3.0
     for i in range(map_size):
         for j in range(map_size):

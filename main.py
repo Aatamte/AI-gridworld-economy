@@ -1,28 +1,39 @@
 import time
 from src.env.GridWorldEconomy import GridWorldEconomy
-from src.agents.HumanAgent import HumanAgent
+from src.agents.simple.RandomAgent import RandomAgent
+from src.agents.simple.GatheringAgent import GatheringAgent
 
 if __name__ == '__main__':
     timesteps = 1000
-    agent1 = HumanAgent()
-    agent2 = HumanAgent()
     n = 50
-    agents = [
-        agent1,
-        agent2
-    ]
+    random_agents = [RandomAgent() for i in range(4)]
+    test_agent = GatheringAgent()
 
+    print([test_agent, *random_agents])
     Env = GridWorldEconomy(
-        agents=agents,
+        agents=[test_agent, *random_agents],
         n=n
     )
 
-    Env.reset()
+    prev_reward = 0
 
-    for i in range(timesteps):
-        actions = []
-        for agent in agents:
-            actions.append(agent.random_action())
-            agent.add_inventory(agent.inventory)
-        time.sleep(2)
-        Env.step(actions)
+    for episode in range(10):
+        state, info = Env.reset()
+
+        for i in range(timesteps):
+            actions = []
+            for agent in random_agents:
+                actions.append(agent.select_action(state))
+                agent.add_inventory(agent.inventory)
+
+            a = test_agent.select_action(state, prev_reward)
+            test_agent.add_inventory(test_agent.inventory)
+
+            print(a)
+            time.sleep(0.05)
+            state, rewards, dones = Env.step(
+                [a, *actions]
+            )
+            prev_reward = rewards[0]
+            print(rewards)
+

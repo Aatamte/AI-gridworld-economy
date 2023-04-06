@@ -20,19 +20,25 @@ class BaseAgent:
         self.name = "default"
         self.color = None
         self.id = None
-        self.inventory = {}
+        self.inventory = {"gold": 0}
         self.inventory_history = []
+        self.totals = [0]
         self.timestep = 0
+        self.action_space = []
 
-    def reset(self, grid):
-        pass
+    def reset(self):
+        self.inventory_history = []
+        self.inventory = {"gold": 0}
+        self.totals = []
+        self.timestep = 0
 
     def add_inventory(self, new_inventory):
         n_inv = new_inventory.copy()
-        n_inv["idx"] = self.timestep
-        self.inventory_history.append(
-            n_inv
+        self.totals.append(
+            {"total": sum(n_inv.values())}
         )
+        n_inv["idx"] = self.timestep
+        self.inventory_history.append(n_inv)
         self.timestep += 1
 
     def move_north(self):
@@ -59,30 +65,33 @@ class BaseAgent:
 
     @staticmethod
     def get_action_type(action):
-        if action == 8:
+        if action == 0:
+            return "move"
+        elif action == 1:
             return "move"
         elif action == 2:
             return "move"
-        elif action == 6:
+        elif action == 3:
             return "move"
         elif action == 4:
-            return "move"
-        elif action == 5:
             return "gather"
         return "NA"
 
     def handle_action(self, action):
         self.last_y = self.y
         self.last_x = self.x
-        if action == 8:
+        if action == 0:
             self.move_north()
-        elif action == 2:
+        elif action == 1:
             self.move_south()
-        elif action == 6:
+        elif action == 2:
             self.move_east()
-        elif action == 4:
+        elif action == 3:
             self.move_west()
         else:
             return False
         self.check_bounds()
         return True
+
+    def send_order(self, name, quantity, price):
+        pass

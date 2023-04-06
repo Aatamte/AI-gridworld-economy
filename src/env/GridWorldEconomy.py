@@ -5,6 +5,7 @@ import numpy as np
 from src.env.Visualizer import GridWorldVisualizer
 from src.env.Map import Map
 from src.env.Resources import Resource, default_resources
+from src.env.Marketplace import Marketplace, Order
 import logging
 import sys
 from flask import Flask
@@ -14,6 +15,7 @@ with contextlib.redirect_stdout(None):
 
 import threading
 from src.Visualization.backend.server import GridWorldReactServer
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -46,8 +48,6 @@ class GridWorldEconomy:
         self.map = None
         self.current_timestep = None
         self.grid = np.zeros((n, n))
-        self.agent_locations = np.zeros((n, n))
-        self.natural_materials = np.zeros((n, n))
 
         # initialize agents and assigns agent ids
         self.agents_map = {}
@@ -60,12 +60,17 @@ class GridWorldEconomy:
             id += 1
 
         self.resource_parameters = default_resources()
+        self.marketplace = Marketplace()
 
         self.server = GridWorldReactServer()
         self.server.run()
 
     def reset(self):
         self.current_timestep = 0
+        for agent in self.agents:
+            agent.reset()
+
+        del self.map
         self.map = Map(
             self.n,
             self.agents,
@@ -76,8 +81,10 @@ class GridWorldEconomy:
         hex_codes = {self.resource_parameters[r].id + 1: self.resource_parameters[r].color for r in self.resource_parameters}
         hex_codes[0] = "#8A9A5B"
         print(hex_codes)
+        agent_names = {i: agent.name for i, agent in enumerate(self.agents)}
         self.server.update(
             {
+                "agent_names": agent_names,
                 "gridworld_color_lookup": hex_codes,
                 "gridworld_y": self.n,
                 "gridworld_x": self.n,
@@ -86,29 +93,59 @@ class GridWorldEconomy:
             }
         )
         time.sleep(1)
+        state = np.concatenate([self.map.resource_amounts.flatten().reshape(1, -1), self.map.agent_locations.flatten().reshape((1, -1))]).flatten().reshape(1, -1)
+
+        return state, {}
 
     def step(self, actions):
         self.map.exec_agent_actions(self.agents, actions)
         for agent in self.agents:
+            agent.inventory["gold"] += 0
+            if agent.inventory["gold"] >= 1000000:
+                self.marketplace.send_order(Order(
+                    order_type="buy",
+                    order_market="wood",
+                    price=10,
+                    quantity=1
+                ))
             logger.info(f"timestep: {self.current_timestep}  {agent.name} {agent.inventory}")
+            #logger.info(f"marketplace: {self.marketplace}")
         if self.render:
             agent_locs = [[agent.x, agent.y] for agent in self.agents]
 
+            agent_totals = []
+            for i in range(self.current_timestep):
+                agent_totals_dict = {}
+                for agent in self.agents:
+                    agent_totals_dict[agent.name] = agent.totals[i]["total"]
+                agent_totals.append(agent_totals_dict)
+
             server_data = {
+                "agent_totals": agent_totals,
                 "gridworld": self.map.resource_ids.tolist(),
                 "agent_locations": agent_locs,
                 "agent_data": [agent.inventory_history for agent in self.agents]
             }
             self.server.update(server_data)
-        self.current_timestep += 1
 
-    def close(self):
-        pygame.quit()
+        agent_rewards = []
+        for agent in self.agents:
+            if len(agent.totals) > 2:
+                agent_rewards.append(
+                    agent.totals[self.current_timestep]["total"] - agent.totals[self.current_timestep - 1]["total"]
+                )
+            else:
+                agent_rewards.append(0)
+
+        self.current_timestep += 1
+        state = np.concatenate([self.map.resource_amounts.flatten().reshape(1, -1), self.map.agent_locations.flatten().reshape((1, -1))]).flatten().reshape(1, -1)
+        return state, agent_rewards, [False for i in self.agents]
+
 
 
 def initialize_agent_names(agents):
     names = {}
-    clrs = ["blue", "red", "green", "purple"]
+    clrs = ["blue", "red", "green", "purple", "gray", "darkgreen", "black"]
 
     for idx, agent in enumerate(agents):
         agent.color = clrs[idx]
