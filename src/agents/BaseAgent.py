@@ -29,14 +29,12 @@ class BaseAgent:
     def reset(self):
         self.inventory_history = []
         self.inventory = {"gold": 0}
-        self.totals = []
+        self.totals = [0]
         self.timestep = 0
 
     def add_inventory(self, new_inventory):
         n_inv = new_inventory.copy()
-        self.totals.append(
-            {"total": sum(n_inv.values())}
-        )
+        self.totals.append(sum(n_inv.values()))
         n_inv["idx"] = self.timestep
         self.inventory_history.append(n_inv)
         self.timestep += 1
@@ -95,3 +93,6 @@ class BaseAgent:
 
     def send_order(self, name, quantity, price):
         pass
+
+    def get_position(self):
+        return self.x, self.y

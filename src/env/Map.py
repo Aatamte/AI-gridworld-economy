@@ -6,22 +6,29 @@ import plotly.graph_objs as go
 from src.env.Resources import Resource
 
 
-def resource_generator(map_size, num_resources, space = 0.5):
+class Block:
+    def __init__(self):
+        pass
+
+
+def resource_generator(map_size, num_resources, space = 0.2, seed = None):
     """
     :param map_size:
     :param num_resources:
     :return:
     """
+    np.random.seed(seed)
     world = np.zeros((map_size, map_size))
-    scale = random.choice([i for i in range(80, 120)])
-    octaves = random.choice([1, 2, 3, 4])
-    persistence = random.choice([0.4, 0.5, 0.6, 0.7, 0.8])
+    scale = 100
+    octaves = 3
+    persistence = 0.7
     lacunarity = 3.0
+    shift_factor = np.random.randint(1, 999999)
     for i in range(map_size):
         for j in range(map_size):
             world[i][j] = noise.pnoise2(
-                i / scale,
-                j / scale,
+                (i + shift_factor) / scale,
+                (j + shift_factor) / scale,
                 octaves,
                 persistence,
                 lacunarity
@@ -57,9 +64,9 @@ class Map:
         self.seed = seed
         self.grid = np.zeros((n, n), dtype=np.int)
         self.agent_locations = np.zeros((n, n), dtype=np.int)
-
         self.resource_ids = np.zeros((n, n), dtype=np.int)
         self.resource_amounts = np.zeros((n, n), dtype=np.int)
+        self.valid_squares = np.zeros((n, n), dtype=np.int)
         self.resource_lookup = {r.id + 1: r for r in resource_parameters.values()}
         self.resource_lookup[0] = Resource(
             name="empty",
@@ -68,7 +75,9 @@ class Map:
         self.buildings = np.zeros((n, n))
         self.starting_resource_types = 0
 
-        self.create_map()
+        self.obstacles = True
+
+        self.create_map(self.obstacles)
 
     def describe(self):
         print("""
@@ -76,7 +85,7 @@ class Map:
 
     def _initialize_resources(self):
         self.resource_ids = resource_generator(
-            self.n, self.num_resources
+            self.n, self.num_resources, seed=self.seed
         )
         self.resource_amounts = create_resource_quantities(self.resource_ids, self.resource_lookup)
 
@@ -84,15 +93,22 @@ class Map:
         for agent in self.agents:
             # if no starting position was specified
             if not agent.x and not agent.y:
-                agent.x = np.random.randint(self.n)
-                agent.y = np.random.randint(self.n)
+                agent.x = np.random.randint(self.n - 1)
+                agent.y = np.random.randint(self.n - 1)
             self.agent_locations[agent.x][agent.y] = agent.id
 
-    def create_map(self):
+    def create_map(self, obstacles):
         self._initialize_resources()
+        if obstacles:
+            self.add_obstacles()
+
         self._initialize_agents()
 
-    def exec_agent_actions(self, agents, actions):
+    def add_obstacles(self):
+        # add a river
+        pass
+
+    def process_agent_actions(self, agents, actions):
         self.agents = agents
         for idx, agent in enumerate(agents):
             action_type = agent.get_action_type(actions[idx])
@@ -100,6 +116,7 @@ class Map:
                 self.move_agent(agent, actions[idx])
             elif action_type == "gather":
                 self.gather_resources(agent)
+            agent.add_inventory(agent.inventory)
 
     def move_agent(self, agent, action):
         agent.handle_action(action)

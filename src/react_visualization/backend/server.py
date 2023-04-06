@@ -27,15 +27,7 @@ DATA_STREAM = {
 
 @app.route('/data')
 def update_gridworld():
-    # Returning an api for showing in  reactjs
     return DATA_STREAM
-
-
-@app.route('/frontend_ready', methods = ["POST"])
-def get_status():
-    status = request.json
-    print(status)
-    return status
 
 
 class GridWorldReactServer:
@@ -57,17 +49,17 @@ class GridWorldReactServer:
         )).start()
 
         cwd = os.getcwd()
-        os.chdir(cwd + '/src/Visualization/frontend/gridworldeconomy')
+        os.chdir(cwd + '/src/react_visualization/frontend/gridworldeconomy')
         build = False
         if build:
             subprocess.Popen("serve -l 3000 -s build", shell=True)
         else:
             subprocess.Popen("npm run start", shell=True)
-
         os.chdir(cwd)
-        time.sleep(10)
+        time.sleep(8)
 
-    def update(self, data):
+    @staticmethod
+    def send(data):
         global DATA_STREAM
         DATA_STREAM = data
         update_gridworld()

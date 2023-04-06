@@ -8,6 +8,7 @@ class COLORS:
     ORE = "#464645"
     METAL = "#71797E"
     GREEN = "#25150B"
+    RIVER = "#193250"
 
 
 def default_resources():
@@ -35,6 +36,12 @@ def default_resources():
             a_max=20,
             id=3,
             color=COLORS.BLACK
+        ),
+        "water": Resource(
+            name= "water",
+            a_max=20,
+            id=4,
+            color=COLORS.RIVER
         )
     }
 

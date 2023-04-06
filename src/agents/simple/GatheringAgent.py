@@ -5,7 +5,7 @@ import random
 class GatheringAgent(BaseAgent):
     def __init__(self):
         super(GatheringAgent, self).__init__()
-        self.name = "Random Agent"
+        self.name = "Random Gathering Agent"
 
     def select_action(self, state, prev_reward):
         if prev_reward == 0:
