@@ -11,6 +11,16 @@ class Block:
         pass
 
 
+default_map_config = {
+    "lakes": True,
+    "rivers": {
+
+    },
+    "resources": None,
+    "invalid_squares": None,
+}
+
+
 def resource_generator(map_size, num_resources, space = 0.2, seed = None):
     """
     :param map_size:
@@ -19,10 +29,10 @@ def resource_generator(map_size, num_resources, space = 0.2, seed = None):
     """
     np.random.seed(seed)
     world = np.zeros((map_size, map_size))
-    scale = 100
-    octaves = 3
+    scale = 40
+    octaves = 2
     persistence = 0.7
-    lacunarity = 3.0
+    lacunarity = 2.0
     shift_factor = np.random.randint(1, 999999)
     for i in range(map_size):
         for j in range(map_size):
@@ -52,32 +62,37 @@ def create_resource_quantities(resource_ids, resource_lookup):
 class Map:
     def __init__(
             self,
-            n,
+            x_size,
+            y_size,
             agents,
             resource_parameters,
             seed=None
     ):
-        self.n = n
+        self.x_size = x_size
+        self.y_size = y_size
         self.agents = agents
         self.resource_parameters = resource_parameters
         self.num_resources = len(self.resource_parameters)
         self.seed = seed
-        self.grid = np.zeros((n, n), dtype=np.int)
-        self.agent_locations = np.zeros((n, n), dtype=np.int)
-        self.resource_ids = np.zeros((n, n), dtype=np.int)
-        self.resource_amounts = np.zeros((n, n), dtype=np.int)
-        self.valid_squares = np.zeros((n, n), dtype=np.int)
+
+        self.square_ids = np.zeros((x_size, y_size), dtype=np.int)
+        #
+        self.agent_locations = np.zeros((x_size, y_size), dtype=np.int)
+        self.resource_ids = np.zeros((x_size, y_size), dtype=np.int)
+        self.resource_amounts = np.zeros((x_size, y_size), dtype=np.int)
+        self.valid_squares = np.zeros((x_size, y_size), dtype=np.int)
         self.resource_lookup = {r.id + 1: r for r in resource_parameters.values()}
         self.resource_lookup[0] = Resource(
             name="empty",
             a_max=0
         )
-        self.buildings = np.zeros((n, n))
+        self.buildings = np.zeros((x_size, y_size))
         self.starting_resource_types = 0
 
         self.obstacles = True
 
         self.create_map(self.obstacles)
+        self.changes_to_map = None
 
     def describe(self):
         print("""
@@ -85,7 +100,7 @@ class Map:
 
     def _initialize_resources(self):
         self.resource_ids = resource_generator(
-            self.n, self.num_resources, seed=self.seed
+            self.x_size, self.num_resources, seed=self.seed
         )
         self.resource_amounts = create_resource_quantities(self.resource_ids, self.resource_lookup)
 
@@ -93,8 +108,8 @@ class Map:
         for agent in self.agents:
             # if no starting position was specified
             if not agent.x and not agent.y:
-                agent.x = np.random.randint(self.n - 1)
-                agent.y = np.random.randint(self.n - 1)
+                agent.x = np.random.randint(self.x_size - 1)
+                agent.y = np.random.randint(self.y_size - 1)
             self.agent_locations[agent.x][agent.y] = agent.id
 
     def create_map(self, obstacles):
@@ -109,6 +124,7 @@ class Map:
         pass
 
     def process_agent_actions(self, agents, actions):
+        previous_map = self.resource_ids.flatten()
         self.agents = agents
         for idx, agent in enumerate(agents):
             action_type = agent.get_action_type(actions[idx])
@@ -117,6 +133,8 @@ class Map:
             elif action_type == "gather":
                 self.gather_resources(agent)
             agent.add_inventory(agent.inventory)
+
+        self.changes_to_map = self.resource_ids.flatten() - previous_map
 
     def move_agent(self, agent, action):
         agent.handle_action(action)

@@ -5,7 +5,7 @@ from src.agents.simple.GatheringAgent import GatheringAgent
 
 if __name__ == '__main__':
     timesteps = 50
-    gridworld_size = 50
+    gridworld_size = 100
     random_agents = [RandomAgent() for i in range(4)]
     test_agent = GatheringAgent()
 
@@ -27,7 +27,7 @@ if __name__ == '__main__':
             a = test_agent.select_action(state, prev_reward)
 
             print(a)
-            time.sleep(0.05)
+            time.sleep(0.5)
             state, rewards, dones = Env.step(
                 [a, *actions]
             )

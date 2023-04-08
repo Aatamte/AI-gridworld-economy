@@ -51,9 +51,6 @@ class Resource:
     name: str
     a_max: int
     current_amount: int = 0
-    map_dimensions: tuple = (0, 0)
-    a_min: float = 0
-    locations: np.ndarray = np.zeros(map_dimensions)
     color: str = None
-    scarcity: str = "normal"
+    scarcity: int = 5
     id: int = None

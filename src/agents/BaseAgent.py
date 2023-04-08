@@ -2,10 +2,10 @@ import numpy as np
 
 
 class ACTIONS:
-    MOVE_NORTH = 8
+    MOVE_NORTH = 1
     MOVE_SOUTH = 2
-    MOVE_WEST = 4
-    MOVE_EAST = 6
+    MOVE_WEST = 3
+    MOVE_EAST = 4
     GATHER = 5
 
 

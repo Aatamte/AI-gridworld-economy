@@ -61,7 +61,15 @@ class GridWorldReactServer:
     @staticmethod
     def send(data):
         global DATA_STREAM
-        DATA_STREAM = data
+        temp_stream = {}
+        for key in data.keys():
+            if key not in DATA_STREAM.keys():
+                temp_stream[key] = data[key]
+            else:
+                if data[key] != DATA_STREAM[key]:
+                    temp_stream[key] = data[key]
+        print(temp_stream.keys())
+        DATA_STREAM = temp_stream
         update_gridworld()
 
 

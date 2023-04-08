@@ -96,7 +96,7 @@ class GridWorldEconomy:
 
         # reset and initialize map configuration
         del self.map
-        self.map = Map(self.gridworld_size, self.agents, self.resource_parameters, seed = self.seed)
+        self.map = Map(self.gridworld_size, self.gridworld_size, self.agents, self.resource_parameters, seed = self.seed)
 
         agent_locs = [agent.get_position() for agent in self.agents]
         hex_codes = {self.resource_parameters[r].id + 1: self.resource_parameters[r].color for r in self.resource_parameters}
@@ -114,7 +114,7 @@ class GridWorldEconomy:
                 "agent_locations": agent_locs
             }
         )
-        time.sleep(1)
+        time.sleep(5)
 
         return self.get_state(), {}
 
