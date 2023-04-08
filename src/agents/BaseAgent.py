@@ -1,25 +1,22 @@
 import numpy as np
-
-
-class ACTIONS:
-    MOVE_NORTH = 1
-    MOVE_SOUTH = 2
-    MOVE_WEST = 3
-    MOVE_EAST = 4
-    GATHER = 5
+from src.agents.actions import ACTIONS
 
 
 class BaseAgent:
     def __init__(self):
+        # location information
         self.x = None
         self.y = None
-        self.grid = None
         self.last_x = None
         self.last_y = None
-        self.bounds = None
+
+        # for environment and rendering
         self.name = "default"
         self.color = None
         self.id = None
+
+        # for the game
+        self.xp = 0
         self.inventory = {"gold": 0}
         self.inventory_history = []
         self.totals = [0]
@@ -39,28 +36,6 @@ class BaseAgent:
         self.inventory_history.append(n_inv)
         self.timestep += 1
 
-    def move_north(self):
-        self.y -= 1
-
-    def move_south(self):
-        self.y += 1
-
-    def move_west(self):
-        self.x -= 1
-
-    def move_east(self):
-        self.x += 1
-
-    def check_bounds(self):
-        if self.x > self.bounds:
-            self.x = self.bounds
-        elif self.x < 0:
-            self.x = 0
-        if self.y > self.bounds:
-            self.y = self.bounds
-        elif self.y < 0:
-            self.y = 0
-
     @staticmethod
     def get_action_type(action):
         if action == 0:
@@ -74,22 +49,6 @@ class BaseAgent:
         elif action == 4:
             return "gather"
         return "NA"
-
-    def handle_action(self, action):
-        self.last_y = self.y
-        self.last_x = self.x
-        if action == 0:
-            self.move_north()
-        elif action == 1:
-            self.move_south()
-        elif action == 2:
-            self.move_east()
-        elif action == 3:
-            self.move_west()
-        else:
-            return False
-        self.check_bounds()
-        return True
 
     def send_order(self, name, quantity, price):
         pass

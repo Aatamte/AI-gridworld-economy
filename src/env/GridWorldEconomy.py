@@ -7,6 +7,8 @@ from src.env.Visualizer import GridWorldVisualizer
 from src.env.Map import Map
 from src.env.Resources import Resource, default_resources
 from src.env.Marketplace import Marketplace, Order
+from src.agents.actions import default_action_space_config, get_action_space_from_config
+
 import logging
 from src.agents.BaseAgent import BaseAgent
 
@@ -21,27 +23,36 @@ console_handler.setLevel(logging.DEBUG)
 console_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
 logger.addHandler(console_handler)
 
+state_space_config = {
+    "agent_visibility_radius": -1,
+
+}
+
 
 class GridWorldEconomy:
     """"""
     def __init__(
             self,
-            agents,
-            gridworld_size: int = 100,
+            gridworld_size=(100, 100),
+            agents: list = None,
             use_react=True,
-            verbose = 0,
-            seed = None
+            verbose: int = 0,
+            action_space_config: dict = default_action_space_config,
+            seed: int = None
     ):
-        if not isinstance(agents, list):
-            raise TypeError(
-                "Please pass a list of BaseAgents. If only one agent, pass a list of length one"
-            )
         # grid world size
-        self.gridworld_size = gridworld_size
-        self.n_agents = len(agents)
-        self.agents = agents
-        self._initialize_agents()
-        self.use_react = use_react
+        if isinstance(gridworld_size, int):
+            self.gridworld_size = (gridworld_size, gridworld_size)
+        else:
+            self.gridworld_size = gridworld_size
+
+        # agent specification
+        if agents:
+            self.set_agents(agents)
+            self.n_agents = len(agents)
+        else:
+            self.agents = agents
+
         self.verbose = verbose
         self.seed = seed
 
@@ -53,9 +64,26 @@ class GridWorldEconomy:
         self.episode = 0
 
         self.resource_parameters = default_resources()
+        self.num_resources = len(self.resource_parameters)
         self.marketplace = Marketplace()
+
+        # rendering
+        self.use_react = use_react
         self.server = GridWorldReactServer()
         self.server.run()
+
+        self.action_space = get_action_space_from_config(action_space_config, self.num_resources)
+        print("action_space", self.action_space)
+        self.state_space = None
+
+    def set_agents(self, agents):
+        if not isinstance(agents, list):
+            raise TypeError(
+                "Please pass a list of BaseAgents. If only one agent, pass a list of length one"
+            )
+        self.agents = agents
+        self.n_agents = len(agents)
+        self._initialize_agents()
 
     def _initialize_agents(self):
         names = {}
@@ -65,8 +93,7 @@ class GridWorldEconomy:
         id = 0
         for idx, agent in enumerate(self.agents):
             agent.id = id
-            agent.bounds = self.gridworld_size - 1
-            if agent.color == None:
+            if agent.color is None:
                 agent.color = random.choice(list(hex_colors - used_colors))
                 used_colors.add(agent.color)
             elif agent.color[0] != "#":
@@ -87,6 +114,9 @@ class GridWorldEconomy:
                 agent.name = agent.name + "_" + str(names[agent.name])
 
     def reset(self):
+        if not self.agents:
+            raise ValueError("agents must be passed through the <set_agents> function before the environment"
+                             "the first episode is run")
         self.current_timestep = 0
         self.episode += 1
 
@@ -96,7 +126,8 @@ class GridWorldEconomy:
 
         # reset and initialize map configuration
         del self.map
-        self.map = Map(self.gridworld_size, self.gridworld_size, self.agents, self.resource_parameters, seed = self.seed)
+        self.map = Map(self.gridworld_size[0], self.gridworld_size[1],
+                       self.agents, self.resource_parameters, seed = self.seed)
 
         agent_locs = [agent.get_position() for agent in self.agents]
         hex_codes = {self.resource_parameters[r].id + 1: self.resource_parameters[r].color for r in self.resource_parameters}
@@ -108,8 +139,8 @@ class GridWorldEconomy:
             {
                 "agent_names": agent_names,
                 "gridworld_color_lookup": hex_codes,
-                "gridworld_y": self.gridworld_size,
-                "gridworld_x": self.gridworld_size,
+                "gridworld_y": self.gridworld_size[1],
+                "gridworld_x": self.gridworld_size[0],
                 "gridworld": self.map.resource_ids.tolist(),
                 "agent_locations": agent_locs
             }
@@ -130,7 +161,7 @@ class GridWorldEconomy:
         return agent_rewards
 
     def get_state(self):
-        return np.concatenate([self.map.resource_amounts.flatten().reshape(1, -1), self.map.agent_locations.flatten().reshape((1, -1))]).flatten().reshape(1, -1)
+        return np.concatenate([self.map.resource_amounts.flatten().reshape(1, -1), self.map.agent_locations.flatten().reshape(1, -1)]).flatten().reshape(1, -1)
 
     def step(self, actions):
         self.map.process_agent_actions(self.agents, actions)

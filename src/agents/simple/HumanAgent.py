@@ -14,8 +14,18 @@ class HumanAgent(BaseAgent):
 
     def select_action(self):
         print(f"agent ({self.color}) {self.name}'s move: ")
-        key = getche().decode()
-        return int(key)
+        key = int(getche().decode())
+        print(key)
+        if key == 8:
+            return 0
+        elif key == 2:
+            return 1
+        elif key == 4:
+            return 2
+        elif key == 6:
+            return 3
+        else:
+            return int(key)
 
     def random_action(self):
         return random.choice([8, 4, 2 ,6 ,5])

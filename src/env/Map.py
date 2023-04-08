@@ -21,21 +21,21 @@ default_map_config = {
 }
 
 
-def resource_generator(map_size, num_resources, space = 0.2, seed = None):
+def resource_generator(x_size, y_size, num_resources, space = 0.5, seed = None):
     """
     :param map_size:
     :param num_resources:
     :return:
     """
     np.random.seed(seed)
-    world = np.zeros((map_size, map_size))
+    world = np.zeros((x_size, y_size))
     scale = 40
     octaves = 2
     persistence = 0.7
     lacunarity = 2.0
     shift_factor = np.random.randint(1, 999999)
-    for i in range(map_size):
-        for j in range(map_size):
+    for i in range(x_size):
+        for j in range(y_size):
             world[i][j] = noise.pnoise2(
                 (i + shift_factor) / scale,
                 (j + shift_factor) / scale,
@@ -100,7 +100,10 @@ class Map:
 
     def _initialize_resources(self):
         self.resource_ids = resource_generator(
-            self.x_size, self.num_resources, seed=self.seed
+            self.x_size,
+            self.y_size,
+            self.num_resources,
+            seed=self.seed
         )
         self.resource_amounts = create_resource_quantities(self.resource_ids, self.resource_lookup)
 
@@ -137,7 +140,27 @@ class Map:
         self.changes_to_map = self.resource_ids.flatten() - previous_map
 
     def move_agent(self, agent, action):
-        agent.handle_action(action)
+        agent.last_x = agent.x
+        agent.last_y = agent.y
+        if action == 0:
+            agent.y -= 1
+        elif action == 1:
+            agent.y += 1
+        elif action == 2:
+            agent.x -= 1
+        elif action == 3:
+            agent.x += 1
+
+        # handle agent moving out of bounds
+        print("agent last position")
+        if agent.x > self.x_size - 1:
+            agent.x = self.x_size - 1
+        elif agent.x < 0:
+            agent.x = 0
+        if agent.y > self.y_size - 1:
+            agent.y = self.y_size - 1
+        elif agent.y < 0:
+            agent.y = 0
         self.agent_locations[agent.last_x, agent.last_y] = 0
         self.agent_locations[agent.x, agent.y] = 1
 
