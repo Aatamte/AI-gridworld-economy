@@ -1,6 +1,8 @@
-# AI-gridworld-economy
+# gridworld-economy
 
-This project is a work-in-progress
+beginning stages of project.
+
+Gridworld-economy is a gym-styled RL environment for researchers to study how agents act in an ecnonomic environment. 
 
 
 
