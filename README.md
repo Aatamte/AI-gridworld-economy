@@ -2,7 +2,7 @@
 
 beginning stages of project.
 
-Gridworld-economy is a gym-styled RL environment for researchers to study how agents act in an ecnonomic environment. 
+Gridworld-economy is a gym-styled RL environment for researchers to study how agents act in an environment with an economy.
 
 
 
