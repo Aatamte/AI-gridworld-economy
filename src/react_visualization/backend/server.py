@@ -1,7 +1,7 @@
 import os
 from flask import Flask, Request, Response, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-
+from src.utils import get_project_root, get_render_path
 import datetime
 import numpy as np
 from flask_cors import CORS, cross_origin
@@ -37,26 +37,27 @@ class GridWorldReactServer:
         self.app = app
         self.debug = False
         self.host: str = "127.0.0.1"
+        self.port = 5000
 
     def run(self):
         # start server on thread
         threading.Thread(
             target=lambda: app.run(
-                port=5000,
+                port=self.port,
                 host=self.host,
                 debug=self.debug,
                 use_reloader=False
         )).start()
 
         cwd = os.getcwd()
-        os.chdir(cwd + '/src/react_visualization/frontend/gridworldeconomy')
+        os.chdir(get_render_path())
         build = False
         if build:
             subprocess.Popen("serve -l 3000 -s build", shell=True)
         else:
             subprocess.Popen("npm run start", shell=True)
         os.chdir(cwd)
-        time.sleep(8)
+        time.sleep(2)
 
     @staticmethod
     def send(data):
@@ -68,7 +69,6 @@ class GridWorldReactServer:
             else:
                 if data[key] != DATA_STREAM[key]:
                     temp_stream[key] = data[key]
-        print(temp_stream.keys())
         DATA_STREAM = temp_stream
         update_gridworld()
 

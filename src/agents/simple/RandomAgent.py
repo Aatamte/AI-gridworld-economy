@@ -8,4 +8,4 @@ class RandomAgent(BaseAgent):
         self.name = "Random Agent"
 
     def select_action(self, state):
-        return random.choice([i for i in range(5)])
+        return random.choice([i for i in range(self.n_actions)])

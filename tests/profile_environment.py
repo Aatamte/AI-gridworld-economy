@@ -1,15 +1,21 @@
 import time
-from src.env.default_environments import SimpleEnvironment
+from src.env.GridWorldEconomy import GridWorldEconomy
 from src.agents.simple.RandomAgent import RandomAgent
 from src.agents.simple.GatheringAgent import GatheringAgent
 from src.agents.complex.PPOAgent.agent import PPOAgent
 import plotly.graph_objs as go
 import numpy as np
+import cProfile, pstats
 
 if __name__ == '__main__':
+    profiler = cProfile.Profile()
+    profiler.enable()
     timesteps = 1000
+    gridworld_size = (10, 10)
 
-    Env = SimpleEnvironment()
+    Env = GridWorldEconomy(
+        gridworld_size=gridworld_size
+    )
     Env.max_timesteps = 1000
 
     action_space = Env.action_space
@@ -32,7 +38,7 @@ if __name__ == '__main__':
     ppo_avg = []
     gathering_avg = []
     sum_avg = []
-    for episode in range(100000):
+    for episode in range(10):
         state, info = Env.reset()
 
         for i in range(timesteps):
@@ -53,23 +59,10 @@ if __name__ == '__main__':
 
         if episode % update_episode == 0:
             ppo_agent.ppo_agent.update()
-            ppo_agent.ppo_agent.save(
-                "C:\\Users\\aaron\\PycharmProjects\\gridworld-economy\\src\\agents\complex\\PPOAgent\\GatheringPPO_final.pth"
-            )
 
-        if episode % graph_episode == 0:
-            go.Figure(
-                data=[
-                    go.Scatter(
-                        y=ppo_avg
-                    ),
-                    go.Scatter(
-                        y=gathering_avg
-                    ),
-                    go.Scatter(
-                        y=sum_avg
-                    )
-                ]
-            ).show()
 
         print(episode, cum_reward, gathering_avg[-1], ppo_avg[-1])
+
+    profiler.disable()
+    stats = pstats.Stats(profiler).sort_stats('cumtime')
+    stats.print_stats()

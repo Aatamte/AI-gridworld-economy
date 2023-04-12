@@ -9,13 +9,10 @@ class HumanAgent(BaseAgent):
     def __init__(self):
         super().__init__()
         self.name = "human"
-        self.x = None
-        self.y = None
 
     def select_action(self):
         print(f"agent ({self.color}) {self.name}'s move: ")
         key = int(getche().decode())
-        print(key)
         if key == 8:
             return 0
         elif key == 2:

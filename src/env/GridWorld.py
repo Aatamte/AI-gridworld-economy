@@ -3,12 +3,8 @@ import random
 import numpy as np
 import noise
 import plotly.graph_objs as go
-from src.env.Resources import Resource
-
-
-class Block:
-    def __init__(self):
-        pass
+from src.env.map_objects.Resources import Resource
+from src.agents.actions import ACTIONS
 
 
 default_map_config = {
@@ -59,7 +55,13 @@ def create_resource_quantities(resource_ids, resource_lookup):
     return resource_quantities
 
 
-class Map:
+class GridWorld:
+    """
+    Handles and stores gridworld information.
+
+    - Procedural map creation
+
+    """
     def __init__(
             self,
             x_size,
@@ -94,10 +96,6 @@ class Map:
         self.create_map(self.obstacles)
         self.changes_to_map = None
 
-    def describe(self):
-        print("""
-        """)
-
     def _initialize_resources(self):
         self.resource_ids = resource_generator(
             self.x_size,
@@ -110,8 +108,9 @@ class Map:
     def _initialize_agents(self):
         for agent in self.agents:
             # if no starting position was specified
-            if not agent.x and not agent.y:
+            if not agent.x:
                 agent.x = np.random.randint(self.x_size - 1)
+            if not agent.y:
                 agent.y = np.random.randint(self.y_size - 1)
             self.agent_locations[agent.x][agent.y] = agent.id
 
@@ -126,62 +125,11 @@ class Map:
         # add a river
         pass
 
-    def process_agent_actions(self, agents, actions):
-        previous_map = self.resource_ids.flatten()
-        self.agents = agents
-        for idx, agent in enumerate(agents):
-            action_type = agent.get_action_type(actions[idx])
-            if action_type == "move":
-                self.move_agent(agent, actions[idx])
-            elif action_type == "gather":
-                self.gather_resources(agent)
-            agent.add_inventory(agent.inventory)
-
-        self.changes_to_map = self.resource_ids.flatten() - previous_map
-
-    def move_agent(self, agent, action):
-        agent.last_x = agent.x
-        agent.last_y = agent.y
-        if action == 0:
-            agent.y -= 1
-        elif action == 1:
-            agent.y += 1
-        elif action == 2:
-            agent.x -= 1
-        elif action == 3:
-            agent.x += 1
-
-        # handle agent moving out of bounds
-        print("agent last position")
-        if agent.x > self.x_size - 1:
-            agent.x = self.x_size - 1
-        elif agent.x < 0:
-            agent.x = 0
-        if agent.y > self.y_size - 1:
-            agent.y = self.y_size - 1
-        elif agent.y < 0:
-            agent.y = 0
-        self.agent_locations[agent.last_x, agent.last_y] = 0
-        self.agent_locations[agent.x, agent.y] = 1
-
-    def gather_resources(self, agent, gather_rate=10):
-        if self.resource_ids[agent.x][agent.y] != 0:
-            on_resource = self.resource_lookup[self.resource_ids[agent.x][agent.y]]
-            print(f"agent standing on resource {on_resource.name} !!!: ",
-                  self.resource_amounts[agent.x, agent.y])
-            current_amount = self.resource_amounts[agent.x][agent.y]
-
-            # if there is no more resource left, declare square empty
-            if current_amount == 0:
-                self.resource_ids[agent.x, agent.y] = 0
-
-            gather_amount = int(min(10, current_amount))
-            self.resource_amounts[agent.x][agent.y] -= gather_amount
-            if on_resource.name in agent.inventory.keys():
-                agent.inventory[on_resource.name] += gather_amount
-            else:
-                agent.inventory[on_resource.name] = gather_amount
+    def get_one_hot_coding_map(self):
+        one_hot_agents = np.arange(len(self.agents)) == self.agent_locations[..., None] - 1
+        one_hot_resources = np.arange(self.num_resources) == self.resource_ids[..., None] - 1
+        return np.concatenate((one_hot_agents, one_hot_resources), axis=2, dtype=int)
 
 
 if __name__ == '__main__':
-    M = Map(200)
+    pass

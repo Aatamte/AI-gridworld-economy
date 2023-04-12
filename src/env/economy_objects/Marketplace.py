@@ -1,7 +1,7 @@
 import numpy as np
 from collections import deque
 from dataclasses import dataclass
-from src.env.Resources import default_resources
+from src.env.map_objects.Resources import default_resources
 
 
 @dataclass
@@ -21,6 +21,9 @@ class ResourceMarketplace:
         self.name = name
         self.buy_orders = []
         self.sell_orders = []
+
+    def process_order(self):
+        pass
 
     def get_quotes(self, order_type):
         if order_type == "buy":

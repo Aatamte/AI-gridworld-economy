@@ -23,28 +23,163 @@ def get_action_space_from_config(action_space_config, num_resources):
     return action_space
 
 
-def get_action_space_value_settings_from_config(action_space_config):
+def get_action_space_lookup_from_config(action_space_config):
     """
 
     """
-    action_settings = {}
+    action_lookup = {}
     idx = 0
     for key, value in action_space_config.items():
         if not value:
             continue
         else:
             if key == "moving":
-                action_settings[idx] = ""
-                pass
+                action_lookup[idx] = ACTIONS.MOVE_NORTH
+                idx += 1
+                action_lookup[idx] = ACTIONS.MOVE_SOUTH
+                idx += 1
+                action_lookup[idx] = ACTIONS.MOVE_WEST
+                idx += 1
+                action_lookup[idx] = ACTIONS.MOVE_EAST
+                idx += 1
             elif key == "gathering":
-                pass
+                action_lookup[idx] = ACTIONS.GATHER
+                idx += 1
             elif key == "trading":
                 pass
+    return action_lookup
+
+
+class ActionHandler:
+    def __init__(
+            self,
+            map_size,
+            config: dict = None,
+    ):
+        self.map_size = map_size
+        self.gather_amount = 10
+
+        # use default config if none provided
+        if config is None:
+            self.config = default_action_space_config
+        else:
+            self.config = config
+
+        self.action_lookup = get_action_space_lookup_from_config(self.config)
+
+    def process_actions(self, agents, actions, gridworld):
+        decoded_actions = [self.action_lookup[action] for action in actions]
+        for idx, agent in enumerate(agents):
+            action = decoded_actions[idx]
+            if action in [
+                    ACTIONS.MOVE_NORTH,
+                    ACTIONS.MOVE_SOUTH,
+                    ACTIONS.MOVE_EAST,
+                    ACTIONS.MOVE_WEST
+            ]:
+                self.move_agent(agent, action, gridworld)
+            elif action == ACTIONS.GATHER:
+                self.gather_resources(agent, gridworld, self.gather_amount)
+            agent.add_inventory(agent.inventory)
+
+    def move_agent(self, agent, action, gridworld):
+        agent.last_x = agent.x
+        agent.last_y = agent.y
+        if action == ACTIONS.MOVE_NORTH:
+            agent.y -= 1
+        elif action == ACTIONS.MOVE_SOUTH:
+            agent.y += 1
+        elif action == ACTIONS.MOVE_WEST:
+            agent.x -= 1
+        elif action == ACTIONS.MOVE_EAST:
+            agent.x += 1
+
+        # handle agent moving out of bounds
+        if agent.x > gridworld.x_size - 1:
+            agent.x = gridworld.x_size - 1
+        elif agent.x < 0:
+            agent.x = 0
+        if agent.y > gridworld.y_size - 1:
+            agent.y = gridworld.y_size - 1
+        elif agent.y < 0:
+            agent.y = 0
+
+        if gridworld.agent_locations[agent.x][agent.y] == 0:
+            gridworld.agent_locations[agent.last_x, agent.last_y] = 0
+            gridworld.agent_locations[agent.x, agent.y] = agent.id
+        else:
+            agent.x = agent.last_x
+            agent.y = agent.last_y
+
+    def gather_resources(self, agent, gridworld, max_gather=10):
+        if gridworld.resource_ids[agent.x][agent.y] != 0:
+            on_resource = gridworld.resource_lookup[gridworld.resource_ids[agent.x][agent.y]]
+            current_amount = gridworld.resource_amounts[agent.x][agent.y]
+
+            # if there is no more resource left, declare square empty
+            if current_amount == 0:
+                gridworld.resource_ids[agent.x, agent.y] = 0
+
+            gather_amount = int(min(max_gather, current_amount))
+            gridworld.resource_amounts[agent.x][agent.y] -= gather_amount
+            if on_resource.name in agent.inventory.keys():
+                agent.inventory[on_resource.name] += gather_amount
+            else:
+                agent.inventory[on_resource.name] = gather_amount
 
 
 class ACTIONS:
-    MOVE_NORTH = 1
-    MOVE_SOUTH = 2
-    MOVE_WEST = 3
-    MOVE_EAST = 4
-    GATHER = 5
+    NOTHING = -1
+    MOVE_NORTH = 0
+    MOVE_SOUTH = 1
+    MOVE_WEST = 2
+    MOVE_EAST = 3
+    GATHER = 4
+    BUILD = 76
+    BUY_FIVE = 5
+    BUY_TEN = 6
+    SELL_FIVE = 7
+    SELL_TEN = 8
+
+
+class MOVINGACTIONS:
+    MOVE_NORTH = 0
+    MOVE_SOUTH = 1
+    MOVE_WEST = 2
+    MOVE_EAST = 3
+
+
+example_config = {
+    "move": ["North"]
+}
+
+
+class ActionSpace:
+    def __init__(
+            self,
+            config
+    ):
+        self.config = config
+        self.lookup = {}
+        idx = 0
+        for key, value in self.config.items():
+            if not value:
+                continue
+            else:
+                if key == "moving":
+                    self.lookup[idx] = ACTIONS.MOVE_NORTH
+                    idx += 1
+                    self.lookup[idx] = ACTIONS.MOVE_SOUTH
+                    idx += 1
+                    self.lookup[idx] = ACTIONS.MOVE_WEST
+                    idx += 1
+                    self.lookup[idx] = ACTIONS.MOVE_EAST
+                    idx += 1
+                elif key == "gathering":
+                    self.lookup[idx] = ACTIONS.GATHER
+                    idx += 1
+                elif key == "trading":
+                    pass
+
+    def add(self):
+        pass
