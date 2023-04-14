@@ -13,7 +13,8 @@ if __name__ == '__main__':
     action_space = Env.action_space
     state_space = Env.state_space
 
-    agents = [GatheringAgent()]
+    # using four GatheringAgents in the environment
+    agents = [GatheringAgent() for _ in range(4)]
 
     # provide the environment with the agents
     Env.set_agents(agents)
@@ -32,3 +33,4 @@ if __name__ == '__main__':
                 break
 
         print(episode, Env.cumulative_rewards)
+
