@@ -1,5 +1,5 @@
 import time
-from src.env.GridWorldEconomy import GridWorldEconomy
+from src.env.BaseEnvironment import GridWorldEconomy
 from src.agents.simple.RandomAgent import RandomAgent
 from src.agents.simple.GatheringAgent import GatheringAgent
 from src.agents.complex.PPOAgent.agent import PPOAgent

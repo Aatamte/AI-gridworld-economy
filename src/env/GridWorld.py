@@ -64,20 +64,20 @@ class GridWorld:
     """
     def __init__(
             self,
-            x_size,
-            y_size,
-            agents,
-            resource_parameters,
-            seed=None
+            x_size: int,
+            y_size: int,
+            agents: list,
+            resource_parameters: dict,
+            seed: int = None
     ):
-        self.x_size = x_size
-        self.y_size = y_size
-        self.agents = agents
-        self.resource_parameters = resource_parameters
-        self.num_resources = len(self.resource_parameters)
-        self.seed = seed
+        self.x_size: int = x_size
+        self.y_size: int = y_size
+        self.agents: list = agents
+        self.resource_parameters: dict = resource_parameters
+        self.num_resources: int = len(self.resource_parameters)
+        self.seed: int = seed
 
-        self.square_ids = np.zeros((x_size, y_size), dtype=np.int)
+        self.square_ids: np.ndarray = np.zeros((x_size, y_size), dtype=np.int)
         #
         self.agent_locations = np.zeros((x_size, y_size), dtype=np.int)
         self.resource_ids = np.zeros((x_size, y_size), dtype=np.int)
@@ -117,13 +117,12 @@ class GridWorld:
     def create_map(self, obstacles):
         self._initialize_resources()
         if obstacles:
-            self.add_obstacles()
+            pass
 
         self._initialize_agents()
 
-    def add_obstacles(self):
-        # add a river
-        pass
+    def add(self):
+        raise NotImplementedError()
 
     def get_one_hot_coding_map(self):
         one_hot_agents = np.arange(len(self.agents)) == self.agent_locations[..., None] - 1

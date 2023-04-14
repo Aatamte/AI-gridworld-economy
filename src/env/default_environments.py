@@ -1,7 +1,7 @@
-from src.env.GridWorldEconomy import GridWorldEconomy
+from src.env.BaseEnvironment import BaseEnvironment
 
 
-class SimpleEnvironment(GridWorldEconomy):
+class SimpleEnvironment(BaseEnvironment):
     def __init__(self):
         super().__init__(
             gridworld_size=(10, 10)

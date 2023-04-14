@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fbacfb83-6ab1-48fd-a6f4-cd2e7082a520" name="Changes" comment="updated resource_maximization_environment.py with multiple agents" />
+    <list default="true" id="fbacfb83-6ab1-48fd-a6f4-cd2e7082a520" name="Changes" comment="added rendering files - app.js and supporting files">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/env/GridWorld.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/env/GridWorld.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/env/GridWorldEconomy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/env/BaseEnvironment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/env/default_environments.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/env/default_environments.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/profile_environment.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/profile_environment.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -256,7 +263,7 @@
       <workItem from="1681155579443" duration="20152000" />
       <workItem from="1681219825059" duration="30962000" />
       <workItem from="1681405146985" duration="148000" />
-      <workItem from="1681484635556" duration="3222000" />
+      <workItem from="1681484635556" duration="4413000" />
     </task>
     <task id="LOCAL-00001" summary="initial project commit">
       <created>1680488605857</created>
@@ -328,7 +335,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681487310254</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="added rendering files - app.js and supporting files">
+      <created>1681488919683</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1681488919683</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -356,7 +370,8 @@
     <MESSAGE value="added in unit testing files, profiling script. started to work on the economy part of the project." />
     <MESSAGE value="added resource_maximization_environment.py to give a simple example of how to use the framework" />
     <MESSAGE value="updated resource_maximization_environment.py with multiple agents" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated resource_maximization_environment.py with multiple agents" />
+    <MESSAGE value="added rendering files - app.js and supporting files" />
+    <option name="LAST_COMMIT_MESSAGE" value="added rendering files - app.js and supporting files" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/gridworld_economy$resource_maximization_environment.coverage" NAME="resource_maximization_environment Coverage Results" MODIFIED="1681487322606" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />

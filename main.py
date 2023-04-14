@@ -1,6 +1,5 @@
 import time
 from src.env.default_environments import SimpleEnvironment
-from src.agents.simple.RandomAgent import RandomAgent
 from src.agents.simple.GatheringAgent import GatheringAgent
 from src.agents.complex.PPOAgent.agent import PPOAgent
 import plotly.graph_objs as go

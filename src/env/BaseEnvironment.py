@@ -1,7 +1,7 @@
 import os
 import random
 import time
-
+from typing import Union
 import numpy as np
 from src.env.GridWorld import GridWorld
 from src.env.map_objects.Resources import Resource, default_resources
@@ -11,7 +11,7 @@ from src.env.Economy import Economy
 import logging
 from src.react_visualization.backend.server import GridWorldReactServer
 from matplotlib.colors import cnames
-
+from src.agents.BaseAgent import BaseAgent
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 console_handler = logging.StreamHandler()
@@ -21,18 +21,18 @@ state_space_config = {
     "agent_visibility_radius": -1,
 }
 
+BaseAgentList = list[BaseAgent]
 
-class GridWorldEconomy:
+
+class BaseEnvironment:
     """
     Highest level class
     """
     def __init__(
             self,
-            gridworld_size=(100, 100),
-            agents: list = None,
-            deterministic_agents = None,
-            nondeterministic_agents = None,
-            use_react=True,
+            gridworld_size: Union[tuple, int] = (100, 100),
+            agents: Union[BaseAgentList] = None,
+            use_react: bool =True,
             verbose: int = 0,
             action_space_config: dict = default_action_space_config,
             seed: int = None
@@ -83,7 +83,7 @@ class GridWorldEconomy:
         console_handler.setLevel(logging.CRITICAL)
         logger.addHandler(console_handler)
 
-    def set_agents(self, agents):
+    def set_agents(self, agents: list[BaseAgent]) -> None:
         if not isinstance(agents, list):
             raise TypeError(
                 "Pass a list of BaseAgents. If only one agent, pass a list of length one"
@@ -123,7 +123,7 @@ class GridWorldEconomy:
                 names[agent.name] += 1
                 agent.name = agent.name + "_" + str(names[agent.name])
 
-    def reset(self):
+    def reset(self) -> [np.ndarray, dict]:
         """
         Resets the environment - including agents and gridworld
         """
@@ -166,7 +166,7 @@ class GridWorldEconomy:
         self.cumulative_rewards = [0 for _ in self.agents]
         return self.get_state(), {}
 
-    def calculate_rewards(self):
+    def calculate_rewards(self) -> list:
         """
 
         """
@@ -181,10 +181,10 @@ class GridWorldEconomy:
 
         return agent_rewards
 
-    def get_state(self):
+    def get_state(self) -> np.ndarray:
         return self.gridworld.get_one_hot_coding_map()
 
-    def step(self, actions):
+    def step(self, actions) -> [np.ndarray, list, list]:
         self.action_handler.process_actions(self.agents, actions, self.gridworld)
 
         if self.current_timestep >= self.max_timesteps:
@@ -203,7 +203,7 @@ class GridWorldEconomy:
 
         return self.get_state(), rewards, dones
 
-    def render_step(self):
+    def render_step(self) -> None:
         agent_locs = [agent.get_position() for agent in self.agents]
 
         agent_totals = []
