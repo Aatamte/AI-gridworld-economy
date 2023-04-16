@@ -12,14 +12,26 @@ class COLORS:
 
 
 def default_resources():
-    return {
-        "wood": Resource(
+    return [
+        Resource(
             name="wood",
             a_max=40,
-            id=0,
-            color=COLORS.GREEN
+            color=COLORS.GREEN,
+            scarcity=4
+        ),
+        Resource(
+            name="ore",
+            a_max=10,
+            color=COLORS.ORE,
+            scarcity=4,
+        ),
+        Resource(
+            name="metal",
+            a_max=5,
+            color=COLORS.BLACK,
+            scarcity=4
         )
-    }
+    ]
 
 
 @dataclass
@@ -28,5 +40,14 @@ class Resource:
     a_max: int
     current_amount: int = 0
     color: str = None
-    scarcity: int = 5
+    scarcity: float = 0.1  # percentage of map covered by the resource
     id: int = None
+    regen: bool = False
+    regen_rate: int = 0
+    gather_amount: int = 1
+
+    def __copy__(self):
+        pass
+
+    def copy(self):
+        pass

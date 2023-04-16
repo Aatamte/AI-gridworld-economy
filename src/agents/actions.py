@@ -79,6 +79,7 @@ class ActionHandler:
             ]:
                 self.move_agent(agent, action, gridworld)
             elif action == ACTIONS.GATHER:
+                pass
                 self.gather_resources(agent, gridworld, self.gather_amount)
             agent.add_inventory(agent.inventory)
 
@@ -112,20 +113,18 @@ class ActionHandler:
             agent.y = agent.last_y
 
     def gather_resources(self, agent, gridworld, max_gather=10):
-        if gridworld.resource_ids[agent.x][agent.y] != 0:
-            on_resource = gridworld.resource_lookup[gridworld.resource_ids[agent.x][agent.y]]
-            current_amount = gridworld.resource_amounts[agent.x][agent.y]
-
+        resource = gridworld[agent.x, agent.y].contains
+        if resource:
             # if there is no more resource left, declare square empty
-            if current_amount == 0:
-                gridworld.resource_ids[agent.x, agent.y] = 0
-
-            gather_amount = int(min(max_gather, current_amount))
-            gridworld.resource_amounts[agent.x][agent.y] -= gather_amount
-            if on_resource.name in agent.inventory.keys():
-                agent.inventory[on_resource.name] += gather_amount
+            if resource.current_amount != 0:
+                gather_amount = int(min(max_gather, resource.gather_amount))
+                resource.current_amount -= gather_amount
+                if resource.name in agent.inventory.keys():
+                    agent.inventory[resource.name] += gather_amount
+                else:
+                    agent.inventory[resource.name] = gather_amount
             else:
-                agent.inventory[on_resource.name] = gather_amount
+                gridworld.grid.resource_key[agent.x, agent.y] = 0
 
 
 class ACTIONS:

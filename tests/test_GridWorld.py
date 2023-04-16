@@ -1,4 +1,4 @@
-from src.env.GridWorld import Map
+from src.env.GridWorld import GridWorld, Grid
 from src.agents.BaseAgent import BaseAgent
 from src.env.map_objects.Resources import default_resources
 
@@ -6,7 +6,7 @@ if __name__ == "__main__":
     agent = BaseAgent()
     x_size = 10
     y_size = 5
-    map = Map(
+    map = GridWorld(
         x_size=x_size,
         y_size=y_size,
         agents=[agent],

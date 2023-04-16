@@ -102,7 +102,7 @@ const get_agent_tab = (info_size) => {
 
 export default class App extends React.PureComponent {
     state = {
-        squareSize: 128,
+        squareSize: 25,
         gridworld_color_lookup: {
             0: "#e3b94d",
             1: "red",

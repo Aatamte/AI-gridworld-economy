@@ -70,8 +70,8 @@ class Marketplace:
 
         if self.markets is None:
             self.markets = {}
-            for market_name in self.default_resources.keys():
-                self.markets[market_name] = ResourceMarketplace(
+            for market_name in self.default_resources:
+                self.markets[market_name.name] = ResourceMarketplace(
                     name=market_name
                 )
 

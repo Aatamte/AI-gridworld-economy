@@ -1,5 +1,5 @@
 import time
-from src.env.default_environments import SimpleEnvironment
+from src.env.BaseEnvironment import BaseEnvironment
 from src.agents.simple.GatheringAgent import GatheringAgent
 from src.agents.complex.PPOAgent.agent import PPOAgent
 import plotly.graph_objs as go
@@ -8,7 +8,9 @@ import numpy as np
 if __name__ == '__main__':
     timesteps = 1000
 
-    Env = SimpleEnvironment()
+    Env = BaseEnvironment(
+        size=(25, 25)
+    )
     Env.max_timesteps = 1000
 
     action_space = Env.action_space
