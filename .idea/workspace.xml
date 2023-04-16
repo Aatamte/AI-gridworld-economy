@@ -1,24 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fbacfb83-6ab1-48fd-a6f4-cd2e7082a520" name="Changes" comment="documentation and type checking improvements">
-      <change afterPath="$PROJECT_DIR$/src/env/economy_objects/Items.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/react_visualization/backend/ReactServer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/benchmark_environment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="fbacfb83-6ab1-48fd-a6f4-cd2e7082a520" name="Changes" comment="added benchmark_environment.py to evaluate performance of environment, stop method for ReactServer.py, and switched over to a custom Grid data structure for the GridWorld.py">
+      <change afterPath="$PROJECT_DIR$/src/react_visualization/frontend/gridworldeconomy/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/resource_maximization_environment.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/resource_maximization_environment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/agents/actions.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/actions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/env/BaseEnvironment.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/env/BaseEnvironment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/env/GridWorld.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/env/GridWorld.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/env/default_environments.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/env/default_environments.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/env/economy_objects/Marketplace.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/env/economy_objects/Marketplace.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/env/map_objects/Items.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/custom_environment_and_agent_example.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/env/map_objects/Resources.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/env/map_objects/Resources.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/react_visualization/backend/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/react_visualization/backend/DataBaseServer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/react_visualization/frontend/gridworldeconomy/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/react_visualization/frontend/gridworldeconomy/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Map_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_GridWorld.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -322,7 +307,7 @@
       <workItem from="1681405146985" duration="148000" />
       <workItem from="1681484635556" duration="5892000" />
       <workItem from="1681501940639" duration="6635000" />
-      <workItem from="1681568344047" duration="26507000" />
+      <workItem from="1681568344047" duration="27562000" />
     </task>
     <task id="LOCAL-00001" summary="initial project commit">
       <created>1680488605857</created>
@@ -408,7 +393,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681490255215</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="added benchmark_environment.py to evaluate performance of environment, stop method for ReactServer.py, and switched over to a custom Grid data structure for the GridWorld.py">
+      <created>1681606885629</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1681606885629</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -438,7 +430,8 @@
     <MESSAGE value="updated resource_maximization_environment.py with multiple agents" />
     <MESSAGE value="added rendering files - app.js and supporting files" />
     <MESSAGE value="documentation and type checking improvements" />
-    <option name="LAST_COMMIT_MESSAGE" value="documentation and type checking improvements" />
+    <MESSAGE value="added benchmark_environment.py to evaluate performance of environment, stop method for ReactServer.py, and switched over to a custom Grid data structure for the GridWorld.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="added benchmark_environment.py to evaluate performance of environment, stop method for ReactServer.py, and switched over to a custom Grid data structure for the GridWorld.py" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
