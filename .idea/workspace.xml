@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fbacfb83-6ab1-48fd-a6f4-cd2e7082a520" name="Changes" comment="added Dockerfile - inconsistent results">
+    <list default="true" id="fbacfb83-6ab1-48fd-a6f4-cd2e7082a520" name="Changes" comment="added mongodb client">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/custom_environment_and_agent_example.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/custom_environment_and_agent_example.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/env/BaseEnvironment.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/env/BaseEnvironment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/env/GridWorld.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/env/GridWorld.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/react_visualization/backend/DataBaseServer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/react_visualization/backend/DataBaseServer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/react_visualization/backend/ReactServer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/react_visualization/backend/ReactServer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/react_visualization/backend/mdb.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/react_visualization/backend/mongoDB_connection.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +79,7 @@
       <recent name="C:\Users\aaron\PycharmProjects\AI-gridworld-economy\src\agents\simple" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.mdb">
+  <component name="RunManager" selected="Python.custom_environment_and_agent_example">
     <configuration default="true" type="CompoundRunConfigurationType">
       <toRun name="start" type="js.build_tools.npm" />
       <toRun name="server" type="PythonConfigurationType" />
@@ -213,7 +217,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="mdb" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="mongoDB_connection" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="gridworld-economy" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -226,7 +230,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/react_visualization/backend/mdb.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\aaron\PycharmProjects\gridworld-economy\src\react_visualization\backend\mongoDB_connection.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -274,12 +278,12 @@
       <item itemvalue="Python.resource_maximization_environment" />
       <item itemvalue="Python.custom_environment_and_agent_example" />
       <item itemvalue="Python.benchmark_environment" />
-      <item itemvalue="Python.mdb" />
+      <item itemvalue="Python.mongoDB_connection" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.custom_environment_and_agent_example" />
-        <item itemvalue="Python.mdb" />
+        <item itemvalue="Python.mongoDB_connection" />
         <item itemvalue="Python.resource_maximization_environment" />
         <item itemvalue="Python.benchmark_environment" />
         <item itemvalue="Python.main (1)" />
@@ -315,7 +319,8 @@
       <workItem from="1681568344047" duration="28051000" />
       <workItem from="1681662525455" duration="141000" />
       <workItem from="1681662801154" duration="42000" />
-      <workItem from="1681668566358" duration="1649000" />
+      <workItem from="1681668566358" duration="1851000" />
+      <workItem from="1681677348677" duration="3774000" />
     </task>
     <task id="LOCAL-00001" summary="initial project commit">
       <created>1680488605857</created>
@@ -415,7 +420,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681608011998</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="added mongodb client">
+      <created>1681672859310</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1681672859310</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -447,27 +459,12 @@
     <MESSAGE value="documentation and type checking improvements" />
     <MESSAGE value="added benchmark_environment.py to evaluate performance of environment, stop method for ReactServer.py, and switched over to a custom Grid data structure for the GridWorld.py" />
     <MESSAGE value="added Dockerfile - inconsistent results" />
-    <option name="LAST_COMMIT_MESSAGE" value="added Dockerfile - inconsistent results" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/env/BaseEnvironment.py</url>
-          <line>2</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/env/BaseEnvironment.py</url>
-          <line>3</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="added mongodb client" />
+    <option name="LAST_COMMIT_MESSAGE" value="added mongodb client" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/gridworld_economy$resource_maximization_environment.coverage" NAME="resource_maximization_environment Coverage Results" MODIFIED="1681600043803" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
-    <SUITE FILE_PATH="coverage/gridworld_economy$custom_environment_and_agent_example.coverage" NAME="custom_environment_and_agent_example Coverage Results" MODIFIED="1681669387509" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/gridworld_economy$custom_environment_and_agent_example.coverage" NAME="custom_environment_and_agent_example Coverage Results" MODIFIED="1681680658202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
     <SUITE FILE_PATH="coverage/gridworld_economy$profile_environment.coverage" NAME="profile_environment Coverage Results" MODIFIED="1681316784369" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/gridworld_economy$mdb.coverage" NAME="mdb Coverage Results" MODIFIED="1681669052920" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/react_visualization/backend" />
     <SUITE FILE_PATH="coverage/AI_gridworld_economy$main__1_.coverage" NAME="main Coverage Results" MODIFIED="1680918482155" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

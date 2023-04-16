@@ -100,6 +100,8 @@ class GridWorld:
         self.y_size: int = y_size
         self.agents: list = agents
         self.seed: int = seed
+        self.episode = None
+        self.curr_step = 0
 
         # array of gridworld size where no agent here -> 0,
         # agent is here -> agent.id
@@ -149,6 +151,12 @@ class GridWorld:
         raise NotImplementedError()
 
     def reset(self):
+        self.curr_step = 0
+        if self.episode:
+            self.episode += 1
+        else:
+            self.episode = 0
+
         self.grid.reset()
         self._init_resources()
         for agent in self.agents:
@@ -159,6 +167,9 @@ class GridWorld:
                 agent.y = np.random.randint(self.y_size - 1)
             self.agent_locations[agent.x][agent.y] = agent.id
             self.grid[agent.x, agent.y].agent_here = True
+
+    def step(self):
+        self.curr_step += 1
 
     def get_one_hot_coding_map(self):
         one_hot_agents = np.arange(len(self.agents)) == self.agent_locations[..., None] - 1

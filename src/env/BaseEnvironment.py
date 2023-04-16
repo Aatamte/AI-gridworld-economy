@@ -9,7 +9,8 @@ from src.env.economy_objects.Marketplace import Marketplace, Order
 from src.agents.actions import default_action_space_config, get_action_space_from_config, ActionHandler
 from src.env.Economy import Economy
 import logging
-from src.react_visualization.backend.DataBaseServer import DatabaseServer, MongoDBClient
+from src.react_visualization.backend.DataBaseServer import DatabaseServer
+from src.react_visualization.backend.mongoDB_connection import MongoDBClient
 from src.react_visualization.backend.ReactServer import ReactServer
 from matplotlib.colors import cnames
 from src.agents.BaseAgent import BaseAgent
@@ -26,7 +27,9 @@ state_space_config = {
 
 class BaseEnvironment:
     """
-    Highest level class
+    class that represents an instance of the highest-level.
+
+    uses the classic gymnasium style environment format
     """
     def __init__(
             self,
@@ -36,7 +39,7 @@ class BaseEnvironment:
             action_space_config: dict = default_action_space_config,
             seed: int = None,
             use_react: bool = True,
-            use_mongodb = True
+            use_mongodb: bool = True
     ):
         # set gridworld size to ()
         if isinstance(size, int):
@@ -149,10 +152,10 @@ class BaseEnvironment:
                              "the first episode is run")
         self.current_timestep = 0
         self.episode += 1
-        self.mdb_client.send()
         # reset each agent
         for agent in self.agents:
             agent.reset()
+        self.cumulative_rewards = [0 for _ in self.agents]
 
         # reset grid
         self.gridworld.reset()
@@ -172,8 +175,12 @@ class BaseEnvironment:
                     "agent_locations": agent_locs
                 }
             )
-        self.cumulative_rewards = [0 for _ in self.agents]
-        time.sleep(8)
+
+        if self.use_mongodb:
+            self.mdb_client.send_gridworld(self.gridworld)
+            self.mdb_client.send_agents(self.agents)
+
+        time.sleep(4)
         return self.get_state(), {}
 
     def calculate_rewards(self) -> list:
@@ -212,8 +219,14 @@ class BaseEnvironment:
         for idx, reward in enumerate(rewards):
             self.cumulative_rewards[idx] += reward
 
+        self.gridworld.step()
+
         if self.use_react:
             self.render_step()
+
+        if self.use_mongodb:
+            self.mdb_client.send_gridworld(self.gridworld)
+            self.mdb_client.send_agents(self.agents)
 
         return self.get_state(), rewards, dones
 
@@ -241,6 +254,7 @@ class BaseEnvironment:
         )
 
     def close(self):
+        self.mdb_client.clear_all_databases()
         self.react_server.stop()
 
 

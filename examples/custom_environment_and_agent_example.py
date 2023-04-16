@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
         for i in range(steps):
             # environment is extremely fast - so use sleep for eval
-            time.sleep(0.25)
+            #time.sleep(0.05)
 
             actions = [agent.select_action(state) for agent in agents]
             state, rewards, done = Env.step(actions)
@@ -33,3 +33,5 @@ if __name__ == '__main__':
                 break
 
         print(episode, Env.cumulative_rewards)
+
+    Env.close()

@@ -26,6 +26,6 @@ class ReactServer:
         self.proc.send_signal(signal.CTRL_C_EVENT)
         self.proc.stdin.write(b"Y\n")
         self.proc.stdin.close()
-        time.sleep(1)
+
 
         print("done")
