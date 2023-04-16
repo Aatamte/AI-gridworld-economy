@@ -9,7 +9,7 @@ from src.env.economy_objects.Marketplace import Marketplace, Order
 from src.agents.actions import default_action_space_config, get_action_space_from_config, ActionHandler
 from src.env.Economy import Economy
 import logging
-from src.react_visualization.backend.DataBaseServer import DatabaseServer
+from src.react_visualization.backend.DataBaseServer import DatabaseServer, MongoDBClient
 from src.react_visualization.backend.ReactServer import ReactServer
 from matplotlib.colors import cnames
 from src.agents.BaseAgent import BaseAgent
@@ -32,10 +32,11 @@ class BaseEnvironment:
             self,
             size: Union[tuple, int] = (100, 100),
             agents: Union = None,
-            use_react: bool = True,
             verbose: int = 0,
             action_space_config: dict = default_action_space_config,
-            seed: int = None
+            seed: int = None,
+            use_react: bool = True,
+            use_mongodb = True
     ):
         # set gridworld size to ()
         if isinstance(size, int):
@@ -70,13 +71,15 @@ class BaseEnvironment:
         # rendering the environment
         self.use_react = use_react
         if self.use_react:
-
             self.react_server = ReactServer()
             self.react_server.start()
 
             self.db_server = DatabaseServer()
             self.db_server.run()
 
+        self.use_mongodb = use_mongodb
+        if self.use_mongodb:
+            self.mdb_client = MongoDBClient()
 
         self.action_space = get_action_space_from_config(action_space_config, self.num_resources)
         self.action_handler = ActionHandler(self.gridworld_size, action_space_config)
@@ -146,7 +149,7 @@ class BaseEnvironment:
                              "the first episode is run")
         self.current_timestep = 0
         self.episode += 1
-
+        self.mdb_client.send()
         # reset each agent
         for agent in self.agents:
             agent.reset()

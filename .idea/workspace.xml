@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fbacfb83-6ab1-48fd-a6f4-cd2e7082a520" name="Changes" comment="added benchmark_environment.py to evaluate performance of environment, stop method for ReactServer.py, and switched over to a custom Grid data structure for the GridWorld.py">
-      <change afterPath="$PROJECT_DIR$/src/react_visualization/frontend/gridworldeconomy/Dockerfile" afterDir="false" />
+    <list default="true" id="fbacfb83-6ab1-48fd-a6f4-cd2e7082a520" name="Changes" comment="added Dockerfile - inconsistent results">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/custom_environment_and_agent_example.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/custom_environment_and_agent_example.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/env/BaseEnvironment.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/env/BaseEnvironment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/react_visualization/backend/DataBaseServer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/react_visualization/backend/DataBaseServer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +43,9 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="xlvspifu" />
+  </component>
   <component name="ProjectId" id="2NtftoScdbu5QOQNjCCHBWFpNgB" />
   <component name="ProjectViewState">
     <option name="foldersAlwaysOnTop" value="false" />
@@ -55,7 +60,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/main.py" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\PyCharm 2020.3.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
@@ -70,32 +75,10 @@
       <recent name="C:\Users\aaron\PycharmProjects\AI-gridworld-economy\src\agents\simple" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.resource_maximization_environment">
+  <component name="RunManager" selected="Python.mdb">
     <configuration default="true" type="CompoundRunConfigurationType">
       <toRun name="start" type="js.build_tools.npm" />
       <toRun name="server" type="PythonConfigurationType" />
-      <method v="2" />
-    </configuration>
-    <configuration name="GridWorld" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="gridworld-economy" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/env" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/env/GridWorld.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
     <configuration name="benchmark_environment" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -230,6 +213,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="mdb" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="gridworld-economy" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/react_visualization/backend" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/react_visualization/backend/mdb.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="resource_maximization_environment" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="gridworld-economy" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -267,17 +272,17 @@
       <item itemvalue="Python.main" />
       <item itemvalue="Python.main (1)" />
       <item itemvalue="Python.resource_maximization_environment" />
-      <item itemvalue="Python.GridWorld" />
       <item itemvalue="Python.custom_environment_and_agent_example" />
       <item itemvalue="Python.benchmark_environment" />
+      <item itemvalue="Python.mdb" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.resource_maximization_environment" />
         <item itemvalue="Python.custom_environment_and_agent_example" />
+        <item itemvalue="Python.mdb" />
+        <item itemvalue="Python.resource_maximization_environment" />
         <item itemvalue="Python.benchmark_environment" />
         <item itemvalue="Python.main (1)" />
-        <item itemvalue="Python.GridWorld" />
       </list>
     </recent_temporary>
   </component>
@@ -307,7 +312,10 @@
       <workItem from="1681405146985" duration="148000" />
       <workItem from="1681484635556" duration="5892000" />
       <workItem from="1681501940639" duration="6635000" />
-      <workItem from="1681568344047" duration="27562000" />
+      <workItem from="1681568344047" duration="28051000" />
+      <workItem from="1681662525455" duration="141000" />
+      <workItem from="1681662801154" duration="42000" />
+      <workItem from="1681668566358" duration="1649000" />
     </task>
     <task id="LOCAL-00001" summary="initial project commit">
       <created>1680488605857</created>
@@ -400,7 +408,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681606885629</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="added Dockerfile - inconsistent results">
+      <created>1681608011998</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1681608011998</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -431,7 +446,8 @@
     <MESSAGE value="added rendering files - app.js and supporting files" />
     <MESSAGE value="documentation and type checking improvements" />
     <MESSAGE value="added benchmark_environment.py to evaluate performance of environment, stop method for ReactServer.py, and switched over to a custom Grid data structure for the GridWorld.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="added benchmark_environment.py to evaluate performance of environment, stop method for ReactServer.py, and switched over to a custom Grid data structure for the GridWorld.py" />
+    <MESSAGE value="added Dockerfile - inconsistent results" />
+    <option name="LAST_COMMIT_MESSAGE" value="added Dockerfile - inconsistent results" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -451,8 +467,9 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/gridworld_economy$resource_maximization_environment.coverage" NAME="resource_maximization_environment Coverage Results" MODIFIED="1681600043803" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
-    <SUITE FILE_PATH="coverage/gridworld_economy$custom_environment_and_agent_example.coverage" NAME="custom_environment_and_agent_example Coverage Results" MODIFIED="1681588757100" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/gridworld_economy$custom_environment_and_agent_example.coverage" NAME="custom_environment_and_agent_example Coverage Results" MODIFIED="1681669387509" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
     <SUITE FILE_PATH="coverage/gridworld_economy$profile_environment.coverage" NAME="profile_environment Coverage Results" MODIFIED="1681316784369" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/gridworld_economy$mdb.coverage" NAME="mdb Coverage Results" MODIFIED="1681669052920" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/react_visualization/backend" />
     <SUITE FILE_PATH="coverage/AI_gridworld_economy$main__1_.coverage" NAME="main Coverage Results" MODIFIED="1680918482155" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/gridworld_economy$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1681569087209" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AI_gridworld_economy$server.coverage" NAME="server Coverage Results" MODIFIED="1680629146157" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Visualization/backend" />

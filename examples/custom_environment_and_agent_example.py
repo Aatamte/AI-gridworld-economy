@@ -19,7 +19,7 @@ if __name__ == '__main__':
     # provide the environment with the agents
     Env.set_agents(agents)
 
-    for episode in range(100000):
+    for episode in range(5):
         state, info = Env.reset()
 
         for i in range(steps):
