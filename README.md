@@ -52,6 +52,12 @@ Below is an GIF of GatheringAgents (note: this is a larger grid, with more resou
 ![ai-gridworld-economy_example](https://user-images.githubusercontent.com/35645363/230498856-0a683546-f11e-4412-997f-1eb73682c35d.gif)
 
 
+# Quickstart (TODO)
+
+currently working on a docker image to make rendering more accessible.
+
+
+
 # Roadmap (TODO)
 Features (estimated percent completed):
 
