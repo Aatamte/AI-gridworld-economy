@@ -4,12 +4,15 @@
     <list default="true" id="fbacfb83-6ab1-48fd-a6f4-cd2e7082a520" name="Changes" comment="added mongodb client">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/custom_environment_and_agent_example.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/custom_environment_and_agent_example.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agents/BaseAgent.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/BaseAgent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agents/actions.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/actions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agents/simple/GatheringAgent.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/simple/GatheringAgent.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/env/BaseEnvironment.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/env/BaseEnvironment.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/env/GridWorld.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/env/GridWorld.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/react_visualization/backend/DataBaseServer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/react_visualization/backend/DataBaseServer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/react_visualization/backend/ReactServer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/react_visualization/backend/ReactServer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/react_visualization/backend/mdb.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/react_visualization/backend/mongoDB_connection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/env/economy_objects/Market.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/env/economy_objects/Market.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/react_visualization/frontend/gridworldeconomy/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/react_visualization/frontend/gridworldeconomy/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/react_visualization/frontend/gridworldeconomy/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/react_visualization/frontend/gridworldeconomy/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +88,7 @@
       <toRun name="server" type="PythonConfigurationType" />
       <method v="2" />
     </configuration>
-    <configuration name="benchmark_environment" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="Market" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="gridworld-economy" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -93,12 +96,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/env/economy_objects" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/benchmark_environment.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/env/economy_objects/Market.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -274,19 +277,19 @@
     <list>
       <item itemvalue="npm.start" />
       <item itemvalue="Python.main" />
-      <item itemvalue="Python.main (1)" />
       <item itemvalue="Python.resource_maximization_environment" />
       <item itemvalue="Python.custom_environment_and_agent_example" />
-      <item itemvalue="Python.benchmark_environment" />
       <item itemvalue="Python.mongoDB_connection" />
+      <item itemvalue="Python.Market" />
+      <item itemvalue="Python.main (1)" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.custom_environment_and_agent_example" />
+        <item itemvalue="Python.main (1)" />
+        <item itemvalue="Python.Market" />
         <item itemvalue="Python.mongoDB_connection" />
         <item itemvalue="Python.resource_maximization_environment" />
-        <item itemvalue="Python.benchmark_environment" />
-        <item itemvalue="Python.main (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -321,6 +324,10 @@
       <workItem from="1681662801154" duration="42000" />
       <workItem from="1681668566358" duration="1851000" />
       <workItem from="1681677348677" duration="3774000" />
+      <workItem from="1681752343306" duration="608000" />
+      <workItem from="1681856770325" duration="5231000" />
+      <workItem from="1681915352152" duration="1289000" />
+      <workItem from="1681930615481" duration="9996000" />
     </task>
     <task id="LOCAL-00001" summary="initial project commit">
       <created>1680488605857</created>
@@ -464,11 +471,12 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/gridworld_economy$resource_maximization_environment.coverage" NAME="resource_maximization_environment Coverage Results" MODIFIED="1681600043803" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
-    <SUITE FILE_PATH="coverage/gridworld_economy$custom_environment_and_agent_example.coverage" NAME="custom_environment_and_agent_example Coverage Results" MODIFIED="1681680658202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/gridworld_economy$custom_environment_and_agent_example.coverage" NAME="custom_environment_and_agent_example Coverage Results" MODIFIED="1681942744377" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
     <SUITE FILE_PATH="coverage/gridworld_economy$profile_environment.coverage" NAME="profile_environment Coverage Results" MODIFIED="1681316784369" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/gridworld_economy$Market.coverage" NAME="Market Coverage Results" MODIFIED="1681932289921" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/env/economy_objects" />
     <SUITE FILE_PATH="coverage/gridworld_economy$mdb.coverage" NAME="mdb Coverage Results" MODIFIED="1681669052920" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/react_visualization/backend" />
     <SUITE FILE_PATH="coverage/AI_gridworld_economy$main__1_.coverage" NAME="main Coverage Results" MODIFIED="1680918482155" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/gridworld_economy$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1681569087209" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/gridworld_economy$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1681935875972" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AI_gridworld_economy$server.coverage" NAME="server Coverage Results" MODIFIED="1680629146157" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Visualization/backend" />
     <SUITE FILE_PATH="coverage/gridworld_economy$GridWorld.coverage" NAME="GridWorld Coverage Results" MODIFIED="1681505432578" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/env" />
     <SUITE FILE_PATH="coverage/AI_gridworld_economy$mdb.coverage" NAME="mdb Coverage Results" MODIFIED="1680889133814" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/react_visualization/backend" />

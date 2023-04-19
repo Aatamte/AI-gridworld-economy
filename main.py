@@ -6,12 +6,9 @@ import plotly.graph_objs as go
 import numpy as np
 
 if __name__ == '__main__':
-    timesteps = 1000
+    max_steps = 1000
 
-    Env = BaseEnvironment(
-        size=(25, 25)
-    )
-    Env.max_timesteps = 1000
+    Env = BaseEnvironment(size=(10, 10))
 
     action_space = Env.action_space
     state_space = Env.state_space

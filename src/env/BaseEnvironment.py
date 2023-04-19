@@ -1,4 +1,3 @@
-import os
 import random
 import time
 from typing import Union
@@ -6,14 +5,13 @@ import numpy as np
 from src.env.GridWorld import GridWorld
 from src.env.map_objects.Resources import Resource, default_resources
 from src.env.economy_objects.Marketplace import Marketplace, Order
-from src.agents.actions import default_action_space_config, get_action_space_from_config, ActionHandler
+from src.agents.actions import default_action_space_config, ActionHandler
 from src.env.Economy import Economy
 import logging
 from src.react_visualization.backend.DataBaseServer import DatabaseServer
 from src.react_visualization.backend.mongoDB_connection import MongoDBClient
 from src.react_visualization.backend.ReactServer import ReactServer
 from matplotlib.colors import cnames
-from src.agents.BaseAgent import BaseAgent
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -31,17 +29,18 @@ class BaseEnvironment:
 
     uses the classic gymnasium style environment format
     """
+
     def __init__(
             self,
             size: Union[tuple, int] = (100, 100),
-            agents: Union = None,
+            max_steps: int = 1000,
+            agents: list = None,
             verbose: int = 0,
-            action_space_config: dict = default_action_space_config,
             seed: int = None,
             use_react: bool = True,
             use_mongodb: bool = True
     ):
-        # set gridworld size to ()
+        # set gridworld size
         if isinstance(size, int):
             self.gridworld_size = (size, size)
         elif isinstance(size, tuple):
@@ -49,8 +48,13 @@ class BaseEnvironment:
         else:
             raise TypeError("gridworld_size argument must be either an int or tuple")
 
-        self.resource_parameters = default_resources()
-        self.num_resources = len(self.resource_parameters)
+        self.resources = default_resources()
+        self.num_resources = len(self.resources)
+        self.max_steps = max_steps
+        self.verbose = verbose
+        self.seed = seed
+        if self.seed:
+            np.random.seed(self.seed)
 
         # agent specification
         if agents:
@@ -59,17 +63,23 @@ class BaseEnvironment:
         else:
             self.agents = agents
 
-        self.verbose = verbose
-        self.seed = seed
-
-        if self.seed:
-            np.random.seed(self.seed)
-
-        self.gridworld = None
+        self.gridworld = GridWorld(self.gridworld_size[0], self.gridworld_size[1],
+                                   self.resources,
+                                   seed=self.seed
+                                   )
         self.current_timestep = None
         self.episode = 0
 
         self.marketplace = Marketplace()
+
+        # configure action space
+        self.action_handler = ActionHandler()
+        self.state_space = None
+        self.cumulative_rewards = []
+
+        # logger
+        console_handler.setLevel(logging.CRITICAL)
+        logger.addHandler(console_handler)
 
         # rendering the environment
         self.use_react = use_react
@@ -83,17 +93,6 @@ class BaseEnvironment:
         self.use_mongodb = use_mongodb
         if self.use_mongodb:
             self.mdb_client = MongoDBClient()
-
-        self.action_space = get_action_space_from_config(action_space_config, self.num_resources)
-        self.action_handler = ActionHandler(self.gridworld_size, action_space_config)
-
-        self.state_space = None
-        self.max_timesteps = 1_000_000
-        self.cumulative_rewards = []
-
-        # logger
-        console_handler.setLevel(logging.CRITICAL)
-        logger.addHandler(console_handler)
 
     def set_agents(self, agents) -> None:
         if not isinstance(agents, list):
@@ -112,7 +111,6 @@ class BaseEnvironment:
         id = 1
         for idx, agent in enumerate(self.agents):
             agent.id = id
-            agent.n_actions = self.action_space
             agent.state_space = self.state_space
             id += 1
             if agent.color is None:
@@ -135,14 +133,6 @@ class BaseEnvironment:
                 names[agent.name] += 1
                 agent.name = agent.name + "_" + str(names[agent.name])
 
-        self.gridworld = GridWorld(
-            self.gridworld_size[0],
-            self.gridworld_size[1],
-            self.agents,
-            self.resource_parameters,
-            seed = self.seed
-        )
-
     def reset(self) -> [np.ndarray, dict]:
         """
         Resets the environment - including agents and gridworld
@@ -152,13 +142,15 @@ class BaseEnvironment:
                              "the first episode is run")
         self.current_timestep = 0
         self.episode += 1
+
         # reset each agent
         for agent in self.agents:
             agent.reset()
+
         self.cumulative_rewards = [0 for _ in self.agents]
 
         # reset grid
-        self.gridworld.reset()
+        self.gridworld.reset(self.agents)
 
         # reset and initialize map configuration
         if self.use_react:
@@ -184,17 +176,15 @@ class BaseEnvironment:
         return self.get_state(), {}
 
     def calculate_rewards(self) -> list:
-        """
-
-        """
         agent_rewards = []
-        for agent in self.agents:
+        for idx, agent in enumerate(self.agents):
             reward = agent.get_reward()
 
-            #if self.gridworld.resource_ids[agent.x][agent.y] == 0:
-             #   reward -= 5
+            # if self.gridworld.resource_ids[agent.x][agent.y] == 0:
+            #   reward -= 5
 
             agent_rewards.append(reward)
+            self.cumulative_rewards[idx] += reward
 
         return agent_rewards
 
@@ -207,26 +197,20 @@ class BaseEnvironment:
 
     def step(self, actions) -> [np.ndarray, list, list]:
         self.action_handler.process_actions(self.agents, actions, self.gridworld)
+        for agent in self.agents:
+            agent.step()
 
-        if self.current_timestep >= self.max_timesteps:
-            dones = [True for i in self.agents]
-        else:
-            dones = [False for i in self.agents]
-
-        self.current_timestep += 1
-
+        # CODE THAT HAPPENS AFTER ALL EVENTS ARE PROCESSED
+        dones = [self.current_timestep >= self.max_steps for _ in self.agents]
         rewards = self.calculate_rewards()
-        for idx, reward in enumerate(rewards):
-            self.cumulative_rewards[idx] += reward
-
         self.gridworld.step()
-
         if self.use_react:
             self.render_step()
 
         if self.use_mongodb:
             self.mdb_client.send_gridworld(self.gridworld)
             self.mdb_client.send_agents(self.agents)
+        self.current_timestep += 1
 
         return self.get_state(), rewards, dones
 
@@ -249,14 +233,10 @@ class BaseEnvironment:
                 "agent_totals": agent_totals,
                 "gridworld": self.gridworld.get_resource_locations,
                 "agent_locations": agent_locs,
-                "agent_data": [agent.inventory_history for agent in self.agents]
+                "agent_data": [agent.inventory.history for agent in self.agents]
             }
         )
 
     def close(self):
         self.mdb_client.clear_all_databases()
         self.react_server.stop()
-
-
-
-

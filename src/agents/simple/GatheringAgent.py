@@ -8,11 +8,11 @@ class GatheringAgent(BaseAgent):
         self.name = "Random Gathering Agent"
 
     def select_action(self, state):
-        if self.timestep >= 1:
+        if self.num_steps >= 1:
             prev_reward = self.get_reward()
             if prev_reward == 0:
-                return random.choice([i for i in range(self.n_actions)])
+                return random.choice([i for i in range(self.action_space.size)])
             else:
                 return 4
         else:
-            return random.choice([i for i in range(self.n_actions)])
+            return random.choice([i for i in range(self.action_space.size)])

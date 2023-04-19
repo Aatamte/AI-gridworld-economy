@@ -89,7 +89,6 @@ class GridWorld:
             self,
             x_size: int,
             y_size: int,
-            agents: list,
             resources: list,
             seed: int = None
     ):
@@ -98,7 +97,6 @@ class GridWorld:
         """
         self.x_size: int = x_size
         self.y_size: int = y_size
-        self.agents: list = agents
         self.seed: int = seed
         self.episode = None
         self.curr_step = 0
@@ -150,7 +148,7 @@ class GridWorld:
     def add(self):
         raise NotImplementedError()
 
-    def reset(self):
+    def reset(self, agents):
         self.curr_step = 0
         if self.episode:
             self.episode += 1
@@ -159,7 +157,7 @@ class GridWorld:
 
         self.grid.reset()
         self._init_resources()
-        for agent in self.agents:
+        for agent in agents:
             # if no starting position was specified
             if not agent.x:
                 agent.x = np.random.randint(self.x_size - 1)
