@@ -1,5 +1,3 @@
-
-
 default_action_space_config = {
     "moving": True,
     "gathering": True,
@@ -15,7 +13,6 @@ class ActionHandler:
     def process_actions(self, agents, actions, gridworld):
         for idx, agent in enumerate(agents):
             action = agent.action_space.decode(actions[idx])
-            print(action)
             if isinstance(action, int):
                 if action in [
                         ACTIONS.MOVE_NORTH,
@@ -26,7 +23,6 @@ class ActionHandler:
                     self.is_move(agent, action, gridworld)
                 elif action == ACTIONS.GATHER:
                     self.is_gather(agent, gridworld, self.gather_amount)
-
 
     @staticmethod
     def is_move(agent, action, gridworld):

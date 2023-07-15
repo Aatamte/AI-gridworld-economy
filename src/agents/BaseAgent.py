@@ -1,24 +1,25 @@
 import numpy as np
 from src.agents.actions import ACTIONS
 import pickle
+import functools
 
 
 class BaseAgent:
-    def __init__(self):
+    def __init__(self, name: str = "default"):
         # location information
         self.x = None
         self.y = None
 
         # for environment and rendering
         self.num_steps = 0
-        self.name = "default"
+        self.name = name
         self.color = None
         self.id = None
 
         # for the environment
         self.xp = 0
         self.xps = [0]
-        self.inventory = Inventory()
+        self.inventory = Inventory(self)
         self.action_space = ActionSpace()
         self.state_space = None
         self.logger = None
@@ -58,17 +59,17 @@ class BaseAgent:
 
 
 class Inventory:
-    def __init__(self, starting_capital: int = 0):
+    def __init__(self, agent, starting_capital: int = 0, starting_inventory: dict = None):
         self.starting_capital = starting_capital
-        self.inventory = {
-            'capital': starting_capital
-        }
+        self.starting_inventory = starting_inventory
+        self.capital = starting_capital
+        self.agent = agent
+        self.inventory = self.starting_inventory if self.starting_inventory  else {}
         self.history = []
 
     def reset(self):
-        self.inventory ={
-            'capital': self.starting_capital
-        }
+        self.inventory = self.starting_inventory if self.starting_inventory  else {}
+        self.capital = self.starting_capital
         self.history.clear()
 
     def step(self):
@@ -80,22 +81,30 @@ class Inventory:
         return 0
 
     def __setitem__(self, key, value):
-        if key in self.inventory.keys():
-            self.inventory[key] += value
+        if key == "capital":
+            self.capital = value
+        elif key in self.inventory.keys():
+            self.inventory[key] = value
         else:
             self.inventory[key] = value
 
     def values(self):
         return self.inventory.values()
 
+    def __repr__(self):
+        return \
+f"""
+-----------------------------
+Agent: {self.agent.name} 
+capital {self.capital}
+{self.inventory}
+-----------------------------"""
+
 
 class ActionSpace:
-    def __init__(self, config: dict = None):
+    def __init__(self):
         self.lookup = {}
         self.total_actions = 0
-        if config is None:
-            self.add_moving_actions()
-            self.add_gathering_actions()
 
     def add(self, action, action_category):
         self.lookup[self.total_actions] = action
@@ -136,7 +145,7 @@ class ActionSpace:
         return self.lookup[action]
 
     def __repr__(self):
-        return self.lookup
+        return str(self.lookup)
 
     @property
     def size(self):

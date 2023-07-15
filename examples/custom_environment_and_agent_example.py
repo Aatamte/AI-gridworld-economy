@@ -1,6 +1,5 @@
 from src.env.default_environments import SimpleEnvironment
 from src.agents.simple.GatheringAgent import GatheringAgent
-from src.agents.BaseAgent import ActionSpace
 import time
 
 if __name__ == '__main__':

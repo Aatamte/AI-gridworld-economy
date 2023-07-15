@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from src.env.GridWorld import GridWorld
+from src.env.environment_enhancements.GridWorld import GridWorld
 from pymongoarrow.api import Schema, write
 import numpy as np
 

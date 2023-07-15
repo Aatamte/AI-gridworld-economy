@@ -1,3 +1,6 @@
+from typing import Dict
+
+from src.env.map_objects.Resources import default_resources
 from dataclasses import dataclass
 import numpy as np
 import pandas as pd
@@ -27,7 +30,18 @@ class OrderBook:
         self.lowest_offer_order: Order = Order(np.inf, -1, BaseAgent())
         self.order_count = 0
         self.num_transactions = 0
-        self.order_book_history = pd.DataFrame(
+        self.history = pd.DataFrame(
+            columns=["transaction_id", "price", "quantity", "buying_agent", "selling_agent"]
+        )
+
+    def reset(self):
+        self.sell_orders = []
+        self.buy_orders = []
+        self.highest_bid_order: Order = Order(-np.inf, 1, BaseAgent())
+        self.lowest_offer_order: Order = Order(np.inf, -1, BaseAgent())
+        self.order_count = 0
+        self.num_transactions = 0
+        self.history = pd.DataFrame(
             columns=["transaction_id", "price", "quantity", "buying_agent", "selling_agent"]
         )
 
@@ -121,7 +135,7 @@ class OrderBook:
             if book_order.quantity == 0:
                 self.buy_orders.remove(book_order)
 
-        self.order_book_history = pd.concat([self.order_book_history, pd.DataFrame(
+        self.history = pd.concat([self.history, pd.DataFrame(
             {
                 "transaction_id": [self.num_transactions],
                 "price": [transaction_price],
@@ -132,6 +146,15 @@ class OrderBook:
                                             )
         self.num_transactions += 1
         return True
+
+    def get_full_orderbook(self):
+        return [(order.price, order.quantity) for order in self.buy_orders] + [(order.price, order.quantity) for order in self.sell_orders]
+
+    def get_buyers(self):
+        return [str(order.price) for order in self.buy_orders]
+
+    def get_sellers(self):
+        return [str(order.price) for order in self.sell_orders]
 
     def __repr__(self):
         new_line = "\n"
@@ -145,6 +168,26 @@ f"""===================================
 {new_line.join(map(str, sell_order_list))}
 {new_line.join(map(str, buy_order_list))}
 ==================================="""
+
+
+class Marketplace:
+    def __init__(self, market_names: list = None):
+        self.name = "MarketPlace"
+        self.markets: Dict[str, OrderBook] = {market_name: OrderBook(market_name) for market_name in market_names} if market_names else None
+
+    def handle_agent_action(self, agent, action: tuple):
+        market_name = action[3][0]
+        price = action[3][1]
+        quantity = action[3][2]
+
+        self.markets[market_name].add(Order(price, quantity, agent))
+
+    def reset(self):
+        for market in self.markets.values():
+            market.reset()
+
+
+
 
 
 if __name__ == '__main__':

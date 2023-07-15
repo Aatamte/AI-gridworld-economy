@@ -1,7 +1,7 @@
 import dataclasses
 import numpy as np
 import noise
-from src.env.map_objects.Resources import Resource
+from src.env.map_objects.Resources import Resource, default_resources
 import math
 from copy import deepcopy
 
@@ -89,7 +89,7 @@ class GridWorld:
             self,
             x_size: int,
             y_size: int,
-            resources: list,
+            resources: list = None,
             seed: int = None
     ):
         """
@@ -100,6 +100,7 @@ class GridWorld:
         self.seed: int = seed
         self.episode = None
         self.curr_step = 0
+        self.name = "GridWorld"
 
         # array of gridworld size where no agent here -> 0,
         # agent is here -> agent.id
@@ -108,7 +109,7 @@ class GridWorld:
         self.grid = Grid(self.x_size, self.y_size)
         ### RESOURCES ###
         self.resource_placement = "automatic"
-        self.resources: list = resources
+        self.resources: list = resources if resources else default_resources()
         self.num_resources: int = len(self.resources)
         self.hex_codes = {0: "#8A9A5B"}
 
